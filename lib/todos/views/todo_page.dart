@@ -22,7 +22,7 @@ class TodoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: 'Home',
+        title: 'TODO list',
         profile: null,
         isBackButtonEnabled: true,
       ),
@@ -72,7 +72,10 @@ class TodoPage extends StatelessWidget {
           ),
           content: TextField(
             controller: controller,
-            decoration: const InputDecoration(hintText: 'Enter TODO title'),
+            decoration: const InputDecoration(
+              hintText: 'Enter TODO title',
+              fillColor: UiColors.background,
+            ),
           ),
           actions: [
             TextButton(
