@@ -1,18 +1,23 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:modulife_todos/repository/repositories.dart';
 import 'package:modulife_todos/models/models.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
-  TodoBloc() : super(const TodoState()) {
+  final TodoRepository todoRepository;
+
+  TodoBloc({required this.todoRepository}) : super(const TodoState()) {
     on<AddTodo>(_onAddTodo);
     on<UpdateTodo>(_onUpdateTodo);
     on<DeleteTodo>(_onDeleteTodo);
+    on<LoadTodos>(_onLoadTodos);
   }
 
-  void _onAddTodo(AddTodo event, Emitter<TodoState> emit) {
+  Future<void> _onAddTodo(AddTodo event, Emitter<TodoState> emit) async {
     emit(state.copyWith(status: TodoStatus.loading));
 
     final List<Todo> updatedTodos = List<Todo>.from(state.allTodos)
@@ -22,12 +27,14 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       allTodos: updatedTodos,
       status: TodoStatus.success,
     ));
+
+    await todoRepository.saveTodos(updatedTodos);
   }
 
-  void _onUpdateTodo(UpdateTodo event, Emitter<TodoState> emit) {
+  Future<void> _onUpdateTodo(UpdateTodo event, Emitter<TodoState> emit) async {
     emit(state.copyWith(status: TodoStatus.loading));
 
-    final List<Todo> updatedTodos = state.allTodos.map((todo) {
+    final List<Todo> updatedTodos = state.allTodos.map((Todo todo) {
       return todo.id == event.todo.id ? event.todo : todo;
     }).toList();
 
@@ -35,17 +42,32 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       allTodos: updatedTodos,
       status: TodoStatus.success,
     ));
+
+    await todoRepository.saveTodos(updatedTodos);
   }
 
-  void _onDeleteTodo(DeleteTodo event, Emitter<TodoState> emit) {
+  Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoState> emit) async {
     emit(state.copyWith(status: TodoStatus.loading));
 
     final List<Todo> updatedTodos =
-        state.allTodos.where((todo) => todo.id != event.todo.id).toList();
+        state.allTodos.where((Todo todo) => todo.id != event.todo.id).toList();
 
     emit(state.copyWith(
       allTodos: updatedTodos,
       status: TodoStatus.success,
     ));
+
+    await todoRepository.saveTodos(updatedTodos);
+  }
+
+  Future<void> _onLoadTodos(LoadTodos event, Emitter<TodoState> emit) async {
+    emit(state.copyWith(status: TodoStatus.loading));
+
+    try {
+      final List<Todo> loadedTodos = await todoRepository.loadTodos();
+      emit(state.copyWith(allTodos: loadedTodos, status: TodoStatus.success));
+    } catch (_) {
+      emit(state.copyWith(status: TodoStatus.failure));
+    }
   }
 }

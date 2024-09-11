@@ -42,3 +42,8 @@ class ToggleTodoStatus extends TodoEvent {
   @override
   List<Object> get props => [todo];
 }
+
+class LoadTodos extends TodoEvent {
+  @override
+  List<Object> get props => [];
+}

@@ -11,13 +11,6 @@ final class TodoState extends Equatable {
     this.status = TodoStatus.initial,
   });
 
-  /*factory TodoState.initial() {
-    return const TodoState(
-      allTodos: [],
-      status: TodoStatus.initial,
-    );
-  }*/
-
   TodoState copyWith({
     List<Todo>? allTodos,
     TodoStatus? status,

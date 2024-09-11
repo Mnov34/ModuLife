@@ -11,7 +11,8 @@ class TodoPage extends StatelessWidget {
   static Route<void> route() {
     return MaterialPageRoute<void>(builder: (BuildContext context) {
       return BlocProvider(
-        create: (BuildContext _) => TodoBloc(),
+        create: (BuildContext _) =>
+            TodoBloc(todoRepository: TodoRepository())..add(LoadTodos()),
         child: const TodoPage(),
       );
     });
@@ -20,41 +21,41 @@ class TodoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomAppBar(
-          title: 'Home',
-          profile: null,
-          isBackButtonEnabled: true,
-        ),
-        body: Stack(
-          children: [
-            Container(
-              color: UiColors.background,
-            ),
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: TodoList(),
-            ),
-          ],
-        ),
-        floatingActionButton: RawMaterialButton(
-          onPressed: () {
-            _showAddTodoDialog(context);
-          },
-          child: const CircleAvatar(
-            radius: 33,
-            backgroundColor: UiColors.accentColor1,
-            child: CircleAvatar(
-              radius: 30,
-              backgroundColor: UiColors.accentColor2,
-              child: Icon(
-                Icons.add,
-                color: UiColors.accentColor1,
-                size: 27,
-              ),
+      appBar: const CustomAppBar(
+        title: 'Home',
+        profile: null,
+        isBackButtonEnabled: true,
+      ),
+      body: Stack(
+        children: [
+          Container(
+            color: UiColors.background,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: TodoList(),
+          ),
+        ],
+      ),
+      floatingActionButton: RawMaterialButton(
+        onPressed: () {
+          _showAddTodoDialog(context);
+        },
+        child: const CircleAvatar(
+          radius: 33,
+          backgroundColor: UiColors.accentColor1,
+          child: CircleAvatar(
+            radius: 30,
+            backgroundColor: UiColors.accentColor2,
+            child: Icon(
+              Icons.add,
+              color: UiColors.accentColor1,
+              size: 27,
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 
   void _showAddTodoDialog(BuildContext context) {
