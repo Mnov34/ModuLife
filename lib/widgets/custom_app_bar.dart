@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:modulife2/profile/models/models.dart';
-import 'package:modulife2/uikit/uicolors.dart';
+import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key, required this.title, required this.profile, required this.enableBackButton});
+  const CustomAppBar({super.key, required this.title, required this.profile, required this.isBackButtonEnabled});
 
   final String title;
   final Profile? profile;
-  final bool enableBackButton;
+  final bool isBackButtonEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         )
       ],
-      automaticallyImplyLeading: enableBackButton,
+      automaticallyImplyLeading: isBackButtonEnabled,
     );
   }
 

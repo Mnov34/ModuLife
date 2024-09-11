@@ -1,7 +1,11 @@
-import 'dart:ui';
+library modulife_ui_colors;
+
+import 'package:flutter/material.dart';
 
 class UiColors {
   UiColors._();
+
+  static const Color dangerRed = Color.fromRGBO(148, 31, 31, 1.0);
 
   static const Color background = Color.fromRGBO(47, 47, 47, 1);
 

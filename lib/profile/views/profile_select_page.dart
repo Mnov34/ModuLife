@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:modulife2/home/home.dart';
 import 'package:modulife2/profile/profile.dart';
-import 'package:modulife2/uikit/uicolors.dart';
+import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 import 'package:modulife2/widgets/custom_app_bar.dart';
 
 class ProfileSelectPage extends StatelessWidget {
   const ProfileSelectPage({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const ProfileSelectPage());
+    return MaterialPageRoute<void>(builder: (BuildContext _) => const ProfileSelectPage());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Profile selection', profile: null, enableBackButton: false,),
+      appBar: const CustomAppBar(title: 'Profile selection', profile: null, isBackButtonEnabled: false,),
       body: Container(
           color: UiColors.background,
           child: Center(

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:modulife2/profile/bloc/profile_bloc.dart';
 import 'package:modulife2/profile/models/models.dart';
-import 'package:modulife2/uikit/uicolors.dart';
+import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class ProfileCreationForm extends StatelessWidget {
   const ProfileCreationForm({super.key});

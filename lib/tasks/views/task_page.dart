@@ -5,24 +5,24 @@ import 'package:modulife2/tasks/tasks.dart';
 import 'package:modulife2/widgets/custom_app_bar.dart';
 
 class TaskPage extends StatelessWidget {
-  TaskPage({super.key});
+  const TaskPage({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (BuildContext _) => TaskPage());
+    return MaterialPageRoute<void>(builder: (BuildContext _) => const TaskPage());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+      create: (BuildContext _) => TasksBloc(),
+      child: Scaffold(
         appBar: const CustomAppBar(
-          title: 'Todo app',
+          title: 'TODOs',
           profile: null,
-          enableBackButton: true,
+          isBackButtonEnabled: true,
         ),
-        body: BlocProvider(
-          create: (context) => TasksBloc(),
-          child: const TaskView(),
-        )
-        );
+        body: TaskView(),
+      ),
+    );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
+import 'package:modulife2/todos/todos.dart';
 import 'package:modulife2/profile/profile.dart';
-import 'package:modulife2/tasks/tasks.dart';
-import 'package:modulife2/uikit/uicolors.dart';
 import 'package:modulife2/widgets/custom_app_bar.dart';
+import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -16,7 +17,7 @@ class HomePage extends StatelessWidget {
       ];
 
   final Map<String, Route<void> Function()> moduleRoutes = {
-    'TODO list': TaskPage.route,
+    'TODO list': TodoPage.route,
   };
 
   @override
@@ -25,7 +26,7 @@ class HomePage extends StatelessWidget {
       appBar: const CustomAppBar(
         title: 'Home',
         profile: null,
-        enableBackButton: false,
+        isBackButtonEnabled: false,
       ),
       body: Stack(
         children: [
@@ -72,30 +73,31 @@ class HomePage extends StatelessWidget {
                           return GestureDetector(
                             onTap: () {
                               if (moduleRoutes.containsKey(moduleName)) {
-                                Navigator.of(context).push(
-                                    moduleRoutes[moduleName]!(),
+                                Navigator.push(
+                                  context,
+                                  moduleRoutes[moduleName]!(),
                                 );
                               }
                             },
-                          );
-                          /*return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12.0),
-                              border: const Border(
-                                bottom: BorderSide(
-                                  color: UiColors.background,
-                                  width: 5,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                border: const Border(
+                                  bottom: BorderSide(
+                                    color: UiColors.background,
+                                    width: 5,
+                                  ),
+                                ),
+                                color: UiColors.accentColor2,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  installedModules[index],
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
-                              color: UiColors.accentColor2,
                             ),
-                            child: Center(
-                              child: Text(
-                                installedModules[index],
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          );*/
+                          );
                         } else {
                           return GestureDetector(
                             onTap: () {
@@ -129,32 +131,33 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
+          /*Positioned(
             bottom: 20,
             right: 20,
-            child: RawMaterialButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  ProfileSelectPage.route(),
-                );
-              },
-              child: const CircleAvatar(
-                radius: 33,
-                backgroundColor: UiColors.accentColor1,
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: UiColors.accentColor2,
-                  child: Icon(
-                    Icons.swap_horiz,
-                    color: UiColors.accentColor1,
-                    size: 27,
-                  ),
-                ),
-              ),
+            child:
+          ),*/
+        ],
+      ),
+      floatingActionButton: RawMaterialButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            ProfileSelectPage.route(),
+          );
+        },
+        child: const CircleAvatar(
+          radius: 33,
+          backgroundColor: UiColors.accentColor1,
+          child: CircleAvatar(
+            radius: 30,
+            backgroundColor: UiColors.accentColor2,
+            child: Icon(
+              Icons.swap_horiz,
+              color: UiColors.accentColor1,
+              size: 27,
             ),
           ),
-        ],
+        ),
       ),
     );
   }
