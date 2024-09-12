@@ -1,0 +1,26 @@
+name: modulife_notes
+description: "A new Flutter package project."
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+  uuid: ^4.5.0
+  shared_preferences: ^2.3.2
+
+  modulife_ui_colors:
+    path: ../modulife_ui_colors
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^9.1.7
+  mockito: ^5.4.4
+  build_runner: ^2.4.11

@@ -17,7 +17,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
   equatable: ^2.0.5
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
@@ -30,6 +29,8 @@ dependencies:
 
   modulife_todos:
     path: packages/modulife_todos
+  modulife_notes:
+    path: packages/modulife_notes
 
 dev_dependencies:
   flutter_test:
