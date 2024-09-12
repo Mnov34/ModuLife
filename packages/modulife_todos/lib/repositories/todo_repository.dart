@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:modulife_todos/models/models.dart';
+import 'package:modulife_todos/models/todo.dart';
 
 class TodoRepository {
   static const String todosKey = 'todos_key';

@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:modulife_todos/repository/repositories.dart';
-import 'package:modulife_todos/models/models.dart';
+import 'package:modulife_todos/repositories/todo_repository.dart';
+import 'package:modulife_todos/models/todo.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';

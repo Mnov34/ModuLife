@@ -7,7 +7,7 @@ sealed class TodoEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AddTodo extends TodoEvent {
+final class AddTodo extends TodoEvent {
   final Todo todo;
 
   const AddTodo({required this.todo});
@@ -16,7 +16,7 @@ class AddTodo extends TodoEvent {
   List<Object> get props => [todo];
 }
 
-class UpdateTodo extends TodoEvent {
+final class UpdateTodo extends TodoEvent {
   final Todo todo;
 
   const UpdateTodo({required this.todo});
@@ -25,7 +25,7 @@ class UpdateTodo extends TodoEvent {
   List<Object> get props => [todo];
 }
 
-class DeleteTodo extends TodoEvent {
+final class DeleteTodo extends TodoEvent {
   final Todo todo;
 
   const DeleteTodo({required this.todo});
@@ -34,7 +34,7 @@ class DeleteTodo extends TodoEvent {
   List<Object> get props => [todo];
 }
 
-class ToggleTodoStatus extends TodoEvent {
+final class ToggleTodoStatus extends TodoEvent {
   final Todo todo;
 
   const ToggleTodoStatus({required this.todo});
@@ -43,7 +43,7 @@ class ToggleTodoStatus extends TodoEvent {
   List<Object> get props => [todo];
 }
 
-class LoadTodos extends TodoEvent {
+final class LoadTodos extends TodoEvent {
   @override
   List<Object> get props => [];
 }

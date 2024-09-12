@@ -3,12 +3,14 @@ import 'package:uuid/uuid.dart';
 
 class Todo extends Equatable {
   final String id;
+  final String? folderId;
   final String title;
   final bool isDone;
   final bool isDeleted;
 
   Todo({
     String? id,
+    this.folderId,
     required this.title,
     bool? isDone,
     bool? isDeleted,
@@ -17,14 +19,15 @@ class Todo extends Equatable {
         isDeleted = isDeleted ?? false;
 
   Todo copyWith({
-
     String? id,
+    String? folderId,
     String? title,
     bool? isDone,
     bool? isDeleted,
   }) {
     return Todo(
       id: id ?? this.id,
+      folderId: folderId ?? this.folderId,
       title: title ?? this.title,
       isDone: isDone ?? this.isDone,
       isDeleted: isDeleted ?? this.isDeleted,
@@ -34,6 +37,7 @@ class Todo extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'folderId': folderId,
       'title': title,
       'isDone': isDone,
       'isDeleted': isDeleted,
@@ -43,6 +47,7 @@ class Todo extends Equatable {
   factory Todo.fromMap(Map<String, dynamic> map) {
     return Todo(
       id: map['id'] ?? const Uuid().v4(),
+      folderId: map['folderId'] ?? null,
       title: map['title'] ?? '',
       isDone: map['isDone'] ?? false,
       isDeleted: map['isDeleted'] ?? false,
@@ -50,5 +55,5 @@ class Todo extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, title, isDone, isDeleted];
+  List<Object?> get props => [id, folderId, title, isDone, isDeleted];
 }
