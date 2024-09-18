@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:modulife_todos/models/folder.dart';
-import 'package:modulife_todos/models/todo.dart';
 import 'package:modulife_todos/repositories/folder_repository.dart';
 
 part 'folder_event.dart';
