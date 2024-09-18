@@ -14,6 +14,7 @@ class TodoList extends StatefulWidget {
 
 class _TodoListState extends State<TodoList> {
   Map<String, bool> _isFolderExpanded = {};
+  Map<String, bool> _isTodoExpanded = {};
   String searchQuery = "";
 
   final Center _empty = Center(
@@ -53,7 +54,7 @@ class _TodoListState extends State<TodoList> {
                     }
 
                     List<Widget> todoWidgets =
-                    _buildFolderAndTodos(context, todoState, folderState);
+                        _buildFoldersAndTodos(context, todoState, folderState);
 
                     return ListView(
                       padding: const EdgeInsets.all(16.0),
@@ -78,65 +79,135 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
-  List<Widget> _buildFolderAndTodos(
+  List<Widget> _buildFoldersAndTodos(
       BuildContext context, TodoState todoState, FolderState folderState) {
     List<Widget> widgets = [];
 
     List<Todo> floatingTodos = todoState.allTodos
-        .where((todo) => todo.folderId == null)
-        .where((todo) => todo.title.toLowerCase().contains(searchQuery))
+        .where((Todo todo) => todo.folderId == null)
+        .where((Todo todo) => todo.title.toLowerCase().contains(searchQuery))
         .toList();
 
     if (floatingTodos.isNotEmpty) {
-      widgets.addAll(floatingTodos.map((todo) => _buildTodoItem(context, todo)));
+      widgets.addAll(
+          floatingTodos.map((Todo todo) => _buildTodoItem(context, todo)));
     }
 
     List<Folder> filteredFolders = folderState.allFolders
-        .where((folder) =>
-    folder.title.toLowerCase().contains(searchQuery) ||
-        folder.todos.any((todo) =>
-            todo.title.toLowerCase().contains(searchQuery)))
+        .where((Folder folder) =>
+            folder.title.toLowerCase().contains(searchQuery) ||
+            folder.todos.any(
+                (Todo todo) => todo.title.toLowerCase().contains(searchQuery)))
         .toList();
 
     for (Folder folder in filteredFolders) {
-      final bool isExpanded = _isFolderExpanded[folder.id] ?? false;
-      widgets.add(
-        GestureDetector(
-          onLongPress: () => _showFolderOptions(context, folder),
-          child: ListTile(
-            leading: Icon(
-              isExpanded
-                  ? Icons.keyboard_arrow_down
-                  : Icons.keyboard_arrow_right,
-              color: UiColors.background,
-            ),
-            title: Text(folder.title),
-            onTap: () {
-              setState(() {
-                _isFolderExpanded[folder.id] = !isExpanded;
-              });
-            },
-          ),
-        ),
-      );
-      if (isExpanded) {
-        widgets.addAll(folder.todos
-            .where((todo) =>
-        todo.title.toLowerCase().contains(searchQuery) || searchQuery.isEmpty)
-            .map((todo) => _buildTodoItem(context, todo))
-            .toList());
-      }
+      widgets.add(_buildFolderItem(context, folder, todoState.allTodos));
     }
 
     return widgets;
   }
 
-  Widget _buildTodoItem(BuildContext context, Todo todo) {
-    bool isExpanded = _isFolderExpanded[todo.id] ?? false;
+  Widget _buildFolderItem(
+      BuildContext context, Folder folder, List<Todo> allTodos) {
+    final bool isExpanded = _isFolderExpanded[folder.id] ?? false;
+
+    List<Todo> folderTodos =
+        allTodos.where((Todo todo) => todo.folderId == folder.id).toList();
+    bool allTodosCompleted =
+        folderTodos.isNotEmpty && folderTodos.every((todo) => todo.isDone);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      decoration: BoxDecoration(
+        color: allTodosCompleted
+            ? UiColors.accentColor1.withOpacity(0.6)
+            : UiColors.accentColor1,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Column(
+        children: [
+          GestureDetector(
+            onLongPress: () {
+              _showFolderOptions(context, folder);
+            },
+            onTap: () {
+              setState(() {
+                _isFolderExpanded[folder.id] = !isExpanded;
+              });
+            },
+            child: Row(
+              children: [
+                Icon(Icons.snippet_folder),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Container(
+                    width: 2,
+                    height: 15,
+                    color: UiColors.background,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    folder.title,
+                    style: TextStyle(
+                      decoration:
+                          allTodosCompleted ? TextDecoration.lineThrough : null,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Icon(
+                  isExpanded
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  color: UiColors.background,
+                ),
+              ],
+            ),
+          ),
+          if (isExpanded) _buildTodosForFolder(context, folder, allTodos)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTodosForFolder(
+      BuildContext context, Folder folder, List<Todo> allTodos) {
+    List<Todo> folderTodos = allTodos
+        .where((Todo todo) => todo.folderId == folder.id)
+        .where((Todo todo) => todo.title.toLowerCase().contains(searchQuery))
+        .toList();
+
+    if (folderTodos.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text("No TODOs in this folder"),
+      );
+    }
+
+    return Column(
+      children: [
+        Divider(
+          color: UiColors.background,
+          thickness: 2,
+        ),
+        Column(
+          children: folderTodos
+              .map((Todo todo) => _buildTodoItem(context, todo))
+              .toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTodoItem(BuildContext context, Todo todo) {
+    bool isExpanded = _isTodoExpanded[todo.id] ?? false;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: BoxDecoration(
         color: todo.isDone
             ? UiColors.accentColor1.withOpacity(0.6)
@@ -147,6 +218,17 @@ class _TodoListState extends State<TodoList> {
         children: [
           Row(
             children: [
+              todo.isDone
+                  ? Icon(Icons.task_alt)
+                  : Icon(Icons.radio_button_unchecked),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Container(
+                  width: 2,
+                  height: 15,
+                  color: UiColors.background,
+                ),
+              ),
               Expanded(
                 child: Text(
                   todo.title,
@@ -166,7 +248,7 @@ class _TodoListState extends State<TodoList> {
                 ),
                 onPressed: () {
                   setState(() {
-                    _isFolderExpanded[todo.id] = !isExpanded;
+                    _isTodoExpanded[todo.id] = !isExpanded;
                   });
                 },
               ),
@@ -180,7 +262,10 @@ class _TodoListState extends State<TodoList> {
             ],
           ),
           if (isExpanded) ...[
-            const SizedBox(height: 10),
+            Divider(
+              color: UiColors.background,
+              thickness: 2,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -219,6 +304,11 @@ class _TodoListState extends State<TodoList> {
               ],
             ),
           ],
+          if (!isExpanded)
+            Divider(
+              color: UiColors.background,
+              thickness: 2,
+            ),
         ],
       ),
     );
@@ -230,15 +320,15 @@ class _TodoListState extends State<TodoList> {
         return BlocBuilder<FolderBloc, FolderState>(
           builder: (BuildContext context, FolderState folderState) {
             final int totalTodos = todoState.allTodos.length +
-                folderState.allFolders.fold<int>(
-                    0, (sum, folder) => sum + folder.todos.length);
+                folderState.allFolders
+                    .fold<int>(0, (sum, folder) => sum + folder.todos.length);
             final int completedTodos = todoState.allTodos
-                .where((todo) => todo.isDone)
-                .length +
+                    .where((todo) => todo.isDone)
+                    .length +
                 folderState.allFolders.fold<int>(
                     0,
-                        (sum, folder) =>
-                    sum + folder.todos.where((todo) => todo.isDone).length);
+                    (int sum, Folder folder) =>
+                        sum + folder.todos.where((todo) => todo.isDone).length);
 
             return Text(
               'Total: $totalTodos, Completed: $completedTodos',
@@ -275,7 +365,7 @@ class _TodoListState extends State<TodoList> {
 
   void _showEditTodoDialog(BuildContext context, Todo todo) {
     final TextEditingController controller =
-    TextEditingController(text: todo.title);
+        TextEditingController(text: todo.title);
 
     showDialog(
       context: context,
@@ -302,7 +392,7 @@ class _TodoListState extends State<TodoList> {
               onPressed: () {
                 if (controller.text.isNotEmpty) {
                   final Todo updatedTodo =
-                  todo.copyWith(title: controller.text);
+                      todo.copyWith(title: controller.text);
                   context.read<TodoBloc>().add(UpdateTodo(todo: updatedTodo));
                   Navigator.of(dialogContext).pop();
                 }
@@ -334,12 +424,49 @@ class _TodoListState extends State<TodoList> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.delete),
+              leading: const Icon(
+                Icons.delete,
+                color: UiColors.dangerRed,
+              ),
               title: const Text('Delete Folder'),
               onTap: () {
-                context.read<FolderBloc>().add(DeleteFolder(folder: folder));
                 Navigator.pop(modalContext);
+                _showDeleteFolderConfirmation(context, folder);
               },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteFolderConfirmation(BuildContext context, Folder folder) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: UiColors.accentColor1,
+          title: const Text('Delete Folder'),
+          content: Text(
+              'Are you sure you want to delete the "${folder.title}" folder?'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                context.read<FolderBloc>().add(DeleteFolder(folder: folder));
+                Navigator.of(context).pop();
+              },
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(UiColors.dangerRed)),
+              child: const Text(
+                'Delete',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
             ),
           ],
         );
