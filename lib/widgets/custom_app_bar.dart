@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:modulife/about/about.dart';
 import 'package:modulife/profile/models/models.dart';
+import 'package:modulife/settings/settings.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -35,23 +37,41 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        PopupMenuButton<int>(
+        PopupMenuButton<String>(
           icon: const Icon(Icons.more_vert, color: Colors.black),
           offset: const Offset(0, 43),
-          onSelected: (int result){
-            if (result == 0) {
-              // TODO: Implement the settings page navigation here
+          onSelected: (String result) {
+            switch (result) {
+              case 'settings':
+                Navigator.of(context).pop();
+                SettingsPage.route();
+                break;
+              case 'about':
+                Navigator.of(context).pop();
+                AboutPage.route();
+                break;
             }
           },
           itemBuilder: (BuildContext context) => [
-            const PopupMenuItem<int>(
-                child: Row(
-                  children: [
-                    Icon(Icons.settings, color: Colors.black),
-                    SizedBox(width: 10),
-                    Text('Settings'),
-                  ],
-                ),
+            const PopupMenuItem<String>(
+              value: 'settings',
+              child: Row(
+                children: [
+                  Icon(Icons.settings, color: Colors.black),
+                  SizedBox(width: 10),
+                  Text('Settings'),
+                ],
+              ),
+            ),
+            const PopupMenuItem<String>(
+              value: 'about',
+              child: Row(
+                children: [
+                  Icon(Icons.question_mark, color: Colors.black),
+                  SizedBox(width: 10),
+                  Text('about'),
+                ],
+              ),
             ),
           ],
         ),
