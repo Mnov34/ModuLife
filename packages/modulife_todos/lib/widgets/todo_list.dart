@@ -121,7 +121,7 @@ class _TodoListState extends State<TodoList> {
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       decoration: BoxDecoration(
         color: allTodosCompleted
-            ? UiColors.accentColor1.withOpacity(0.6)
+            ? UiColors.accentColor2
             : UiColors.accentColor1,
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -202,6 +202,117 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
+  void _showFolderOptions(BuildContext context, Folder folder) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext modalContext) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit Folder'),
+              onTap: () {
+                Navigator.pop(modalContext);
+                _showEditFolderDialog(context, folder);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.delete,
+                color: UiColors.dangerRed,
+              ),
+              title: const Text('Delete Folder'),
+              onTap: () {
+                Navigator.pop(modalContext);
+                _showDeleteFolderConfirmation(context, folder);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showEditFolderDialog(BuildContext context, Folder folder) {
+    final TextEditingController controller =
+    TextEditingController(text: folder.title);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: UiColors.accentColor1,
+          title: const Text(
+            'Edit Folder',
+            style: TextStyle(color: UiColors.background),
+          ),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(hintText: 'Enter new Folder title'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text('Cancel',
+                  style: TextStyle(color: UiColors.background)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (controller.text.isNotEmpty) {
+                  final Folder updatedFolder =
+                  folder.copyWith(title: controller.text);
+                  context.read<FolderBloc>().add(UpdateFolder(folder: updatedFolder));
+                  Navigator.of(dialogContext).pop();
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: UiColors.accentColor2),
+              child: const Text('Update',
+                  style: TextStyle(color: UiColors.accentColor1)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteFolderConfirmation(BuildContext context, Folder folder) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: UiColors.accentColor1,
+          title: const Text('Delete Folder'),
+          content: Text(
+              'Are you sure you want to delete the "${folder.title}" folder?'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                context.read<FolderBloc>().add(DeleteFolder(folder: folder));
+                Navigator.of(context).pop();
+              },
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(UiColors.dangerRed)),
+              child: const Text(
+                'Delete',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildTodoItem(BuildContext context, Todo todo) {
     bool isExpanded = _isTodoExpanded[todo.id] ?? false;
 
@@ -210,7 +321,7 @@ class _TodoListState extends State<TodoList> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: BoxDecoration(
         color: todo.isDone
-            ? UiColors.accentColor1.withOpacity(0.6)
+            ? UiColors.accentColor2
             : UiColors.accentColor1,
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -254,7 +365,7 @@ class _TodoListState extends State<TodoList> {
               ),
               Checkbox(
                 value: todo.isDone,
-                activeColor: UiColors.accentColor2,
+                activeColor: UiColors.accentColor3,
                 onChanged: (bool? value) {
                   context.read<TodoBloc>().add(ToggleTodoStatus(todo: todo));
                 },
@@ -275,29 +386,33 @@ class _TodoListState extends State<TodoList> {
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         'Edit',
                         style: TextStyle(color: Colors.black),
                       ),
                       SizedBox(width: 5),
-                      Icon(Icons.edit, color: UiColors.accentColor2),
+                      Icon(Icons.edit, color: todo.isDone
+                          ? UiColors.accentColor1
+                          : UiColors.accentColor2),
                     ],
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    context.read<TodoBloc>().add(DeleteTodo(todo: todo));
+                    _showDeleteTodoConfirmation(context, todo);
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
                         'Delete',
                         style: TextStyle(color: Colors.black),
                       ),
                       SizedBox(width: 5),
-                      Icon(Icons.delete, color: Colors.red),
+                      Icon(Icons.delete, color: todo.isDone
+                          ? UiColors.dangerRed2
+                          : UiColors.dangerRed),
                     ],
                   ),
                 ),
@@ -310,55 +425,6 @@ class _TodoListState extends State<TodoList> {
               thickness: 2,
             ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTodoCounter(BuildContext context) {
-    return BlocBuilder<TodoBloc, TodoState>(
-      builder: (BuildContext context, TodoState todoState) {
-        return BlocBuilder<FolderBloc, FolderState>(
-          builder: (BuildContext context, FolderState folderState) {
-            final int totalTodos = todoState.allTodos.length +
-                folderState.allFolders
-                    .fold<int>(0, (sum, folder) => sum + folder.todos.length);
-            final int completedTodos = todoState.allTodos
-                    .where((todo) => todo.isDone)
-                    .length +
-                folderState.allFolders.fold<int>(
-                    0,
-                    (int sum, Folder folder) =>
-                        sum + folder.todos.where((todo) => todo.isDone).length);
-
-            return Text(
-              'Total: $totalTodos, Completed: $completedTodos',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: UiColors.accentColor1,
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return TextField(
-      onChanged: (String value) {
-        setState(() {
-          searchQuery = value.toLowerCase();
-        });
-      },
-      decoration: InputDecoration(
-        hintText: 'Search TODOs...',
-        prefixIcon: const Icon(Icons.search),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-        ),
-        filled: true,
-        fillColor: UiColors.accentColor1,
       ),
     );
   }
@@ -408,39 +474,7 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
-  void _showFolderOptions(BuildContext context, Folder folder) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext modalContext) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('Edit Folder'),
-              onTap: () {
-                // Implement Folder Edit logic here
-                Navigator.pop(modalContext);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.delete,
-                color: UiColors.dangerRed,
-              ),
-              title: const Text('Delete Folder'),
-              onTap: () {
-                Navigator.pop(modalContext);
-                _showDeleteFolderConfirmation(context, folder);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showDeleteFolderConfirmation(BuildContext context, Folder folder) {
+  void _showDeleteTodoConfirmation(BuildContext context, Todo todo) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -448,11 +482,11 @@ class _TodoListState extends State<TodoList> {
           backgroundColor: UiColors.accentColor1,
           title: const Text('Delete Folder'),
           content: Text(
-              'Are you sure you want to delete the "${folder.title}" folder?'),
+              'Are you sure you want to delete the "${todo.title}" TODO?'),
           actions: [
             ElevatedButton(
               onPressed: () {
-                context.read<FolderBloc>().add(DeleteFolder(folder: folder));
+                context.read<TodoBloc>().add(DeleteTodo(todo: todo));
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
@@ -471,6 +505,55 @@ class _TodoListState extends State<TodoList> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildTodoCounter(BuildContext context) {
+    return BlocBuilder<TodoBloc, TodoState>(
+      builder: (BuildContext context, TodoState todoState) {
+        return BlocBuilder<FolderBloc, FolderState>(
+          builder: (BuildContext context, FolderState folderState) {
+            final int totalTodos = todoState.allTodos.length +
+                folderState.allFolders
+                    .fold<int>(0, (sum, folder) => sum + folder.todos.length);
+            final int completedTodos = todoState.allTodos
+                .where((todo) => todo.isDone)
+                .length +
+                folderState.allFolders.fold<int>(
+                    0,
+                        (int sum, Folder folder) =>
+                    sum + folder.todos.where((todo) => todo.isDone).length);
+
+            return Text(
+              'Total: $totalTodos, Completed: $completedTodos',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: UiColors.accentColor1,
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return TextField(
+      onChanged: (String value) {
+        setState(() {
+          searchQuery = value.toLowerCase();
+        });
+      },
+      decoration: InputDecoration(
+        hintText: 'Search TODOs...',
+        prefixIcon: const Icon(Icons.search),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        ),
+        filled: true,
+        fillColor: UiColors.accentColor1,
+      ),
     );
   }
 }
