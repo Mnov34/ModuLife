@@ -1,6 +1,6 @@
 name: modulife_todos
 description: "The TODO list package of Modulife."
-version: 0.0.4
+version: 0.4.1
 publish_to: none
 
 environment:
