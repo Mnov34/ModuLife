@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => HomePage());
+    return MaterialPageRoute<void>(builder: (BuildContext _) => HomePage());
   }
 
   List<String> get installedModules => [
@@ -131,11 +131,6 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          /*Positioned(
-            bottom: 20,
-            right: 20,
-            child:
-          ),*/
         ],
       ),
       floatingActionButton: RawMaterialButton(
