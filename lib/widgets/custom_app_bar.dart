@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:modulife/about/about.dart';
+import 'package:modulife/about/views/about_page.dart';
 import 'package:modulife/profile/models/models.dart';
 import 'package:modulife/settings/settings.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
@@ -43,12 +44,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onSelected: (String result) {
             switch (result) {
               case 'settings':
-                Navigator.of(context).pop();
-                SettingsPage.route();
+                Navigator.push(context, SettingsPage.route());
                 break;
               case 'about':
-                Navigator.of(context).pop();
-                AboutPage.route();
+                Navigator.push(context, AboutPage.route());
                 break;
             }
           },
