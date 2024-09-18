@@ -17,8 +17,7 @@ I made this project with me and my boyfriend in mind, to help us in our daily li
 
 ## Currently implemented features
 
-- TODO list: 
-    [A simple TODO list with folders.]
+- TODO list: [A simple TODO list with folders.]
 
 ## Installation
 
@@ -27,19 +26,15 @@ WIP
 ## Planned features
 
 ### Features being currently worked on:
-Notes :
-- [A fully fledged note taking app with folders.]
+- Notes : [A fully fledged note taking app with folders.]
 
 ### Features to be implemented in the future (in order of importance):
 
-Agenda :
-- [A fully fledged agenda with the possibility to link to an existing TODO list task/folder or a note folder/note.]
+- Agenda : [A fully fledged agenda with the possibility to link to an existing TODO list task/folder or a note folder/note.]
 
-Profiles :
-- [A profile system, designed to separate your modules between different users.]
+- Profiles : [A profile system, designed to separate your modules between different users.]
 
-PDF Scanner :
-- [A classic PDF scanner with the possibility to display or link to a scanned image on the note module.]
+- PDF Scanner : [A classic PDF scanner with the possibility to display or link to a scanned image on the note module.]
 
 ## Usage
 
