@@ -3,6 +3,7 @@ import 'package:modulife_notes/models/note.dart';
 import 'package:modulife_notes/repositories/note_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore_for_file: unused_local_variable
 void main() {
   late NoteRepository noteRepository;
   late SharedPreferences prefs;
