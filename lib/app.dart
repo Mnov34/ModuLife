@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'package:modulife/home/home.dart';
 import 'package:modulife/splash/splash.dart';
@@ -31,6 +32,7 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
+  final Logger log = Logger();
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   NavigatorState get _navigator => _navigatorKey.currentState!;
@@ -47,7 +49,7 @@ class _AppViewState extends State<AppView> {
               (Route<dynamic> route) => false,
             );
           } catch (e) {
-            print('Error: $e');
+            log.d('Error: $e');
           }
         });
         return child ?? Container();

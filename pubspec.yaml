@@ -2,7 +2,7 @@ name: modulife
 description: "Simply an easier life."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.1.0+3
+version: 1.1.0+4
 
 repository: https://github.com/Mnov34/ModuLife
 homepage: https://github.com/Mnov34/ModuLife
@@ -19,6 +19,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  logger: ^2.4.0
   equatable: ^2.0.5
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
