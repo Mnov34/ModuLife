@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import 'package:modulife/home/home.dart';
-import 'package:modulife/profile/profile.dart';
 import 'package:modulife/splash/splash.dart';
 
 class App extends StatefulWidget {
