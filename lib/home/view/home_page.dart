@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:modulife2/todos/todos.dart';
-import 'package:modulife2/profile/profile.dart';
-import 'package:modulife2/widgets/custom_app_bar.dart';
+import 'package:modulife/todos/todos.dart';
+import 'package:modulife/profile/profile.dart';
+import 'package:modulife/widgets/custom_app_bar.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (BuildContext _) => HomePage());
+    return MaterialPageRoute<void>(builder: (_) => HomePage());
   }
 
   List<String> get installedModules => [

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:modulife2/profile/models/models.dart';
+import 'package:modulife/profile/models/models.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

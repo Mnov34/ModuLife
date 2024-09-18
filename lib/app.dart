@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:modulife2/home/home.dart';
-import 'package:modulife2/profile/profile.dart';
-import 'package:modulife2/splash/splash.dart';
+import 'package:modulife/home/home.dart';
+import 'package:modulife/profile/profile.dart';
+import 'package:modulife/splash/splash.dart';
 
 class App extends StatefulWidget {
   const App({super.key});

@@ -1,4 +1,4 @@
-package com.simplyeasier.modulife2
+package com.simplyeasier.modulife
 
 import io.flutter.embedding.android.FlutterActivity
 

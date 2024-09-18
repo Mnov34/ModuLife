@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modulife_todos/modulife_todos.dart';
 import 'package:modulife_todos/repositories/folder_repository.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
-import 'package:modulife2/widgets/custom_app_bar.dart';
+import 'package:modulife/widgets/custom_app_bar.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});

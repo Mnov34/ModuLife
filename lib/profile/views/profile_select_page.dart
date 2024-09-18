@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:modulife2/home/home.dart';
-import 'package:modulife2/profile/profile.dart';
+import 'package:modulife/home/home.dart';
+import 'package:modulife/profile/profile.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
-import 'package:modulife2/widgets/custom_app_bar.dart';
+import 'package:modulife/widgets/custom_app_bar.dart';
 
 class ProfileSelectPage extends StatelessWidget {
   const ProfileSelectPage({super.key});
