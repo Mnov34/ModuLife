@@ -2,7 +2,7 @@ name: modulife2
 description: "Simply an easier life."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0-beta.1
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
@@ -31,6 +31,8 @@ dependencies:
     path: packages/modulife_todos
   modulife_notes:
     path: packages/modulife_notes
+  modulife_scanner:
+    path: packages/modulife_scanner
 
 dev_dependencies:
   flutter_test:
