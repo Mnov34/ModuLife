@@ -1,6 +1,6 @@
 name: modulife_ui_colors
 description: "Modulife UI colors for reusability inside other packages"
-version: 0.0.1
+version: 0.1.0
 publish_to: none
 
 environment:

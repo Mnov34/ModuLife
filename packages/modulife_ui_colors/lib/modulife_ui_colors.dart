@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 class UiColors {
   UiColors._();
 
-  static const Color dangerRed = Color.fromRGBO(148, 31, 31, 1.0);
+  static const Color dangerRed = Color.fromRGBO(255, 0, 0, 1.0);
+  static const Color dangerRed2 = Color.fromRGBO(192, 44, 44, 1.0);
 
   static const Color background = Color.fromRGBO(47, 47, 47, 1);
 
   static const Color accentColor1 = Color.fromRGBO(186, 242, 187, 1);
-  static const Color accentColor2 = Color.fromRGBO(77, 122, 77, 1.0);
+  static const Color accentColor2 = Color.fromRGBO(77, 122, 77, 1);
+  static const Color accentColor3 = Color.fromRGBO(14,177,210,1);
 
 
 
