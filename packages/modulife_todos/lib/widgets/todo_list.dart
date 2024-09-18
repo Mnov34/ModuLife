@@ -19,10 +19,10 @@ class _TodoListState extends State<TodoList> {
 
   final Center _empty = Center(
     child: Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Text(
-        'No TODOs or Folders created! Add a new TODO by clicking on the "+" button on the bottom right.',
-        style: TextStyle(color: Colors.grey[600], fontSize: 18),
+        'No TODOs or Folders created!\n\nGet started by clicking the "+" button on the bottom right.',
+        style: TextStyle(color: Colors.grey[600], fontSize: 22),
       ),
     ),
   );
@@ -183,7 +183,7 @@ class _TodoListState extends State<TodoList> {
     if (folderTodos.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(8.0),
-        child: Text("No TODOs in this folder"),
+        child: Text('No TODOs in this folder.'),
       );
     }
 
