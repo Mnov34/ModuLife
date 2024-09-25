@@ -50,27 +50,27 @@ class _NotesPageState extends State<NotesPage> {
             value: 'Folder',
             child: ListTile(
               leading:
-                  Icon(Icons.create_new_folder, color: UiColors.accentColor2),
+                  Icon(Icons.create_new_folder, color: UiColors.secondaryColor),
               title: Text('Create Folder'),
             ),
           ),
           const PopupMenuItem(
             value: 'Note',
             child: ListTile(
-              leading: Icon(Icons.note_add, color: UiColors.accentColor2),
+              leading: Icon(Icons.note_add, color: UiColors.secondaryColor),
               title: Text('Create Note'),
             ),
           ),
         ],
         icon: const CircleAvatar(
           radius: 33,
-          backgroundColor: UiColors.accentColor1,
+          backgroundColor: UiColors.primaryColor,
           child: CircleAvatar(
             radius: 30,
-            backgroundColor: UiColors.accentColor2,
+            backgroundColor: UiColors.secondaryColor,
             child: Icon(
               Icons.add,
-              color: UiColors.accentColor1,
+              color: UiColors.primaryColor,
               size: 27,
             ),
           ),
@@ -87,7 +87,7 @@ class _NotesPageState extends State<NotesPage> {
       context: parentContext,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          backgroundColor: UiColors.accentColor1,
+          backgroundColor: UiColors.primaryColor,
           title: Text(
             'Add $type',
             style: const TextStyle(color: UiColors.background),

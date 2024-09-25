@@ -1,10 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:modulife/about/about.dart';
-import 'package:modulife/about/views/about_page.dart';
 import 'package:modulife/profile/models/models.dart';
-import 'package:modulife/settings/settings.dart';
-import 'package:modulife_ui_colors/modulife_ui_colors.dart';
+import 'package:modulife/utils/app_router.gr.dart';
+import 'package:modulife_ui_colors/util/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -21,16 +20,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: UiColors.accentColor1,
+      backgroundColor: UiColors.primaryColor,
       title: Row(
         children: [
           if (profile != null) ...[
             const CircleAvatar(
-              backgroundColor: UiColors.accentColor1,
+              backgroundColor: UiColors.primaryColor,
               radius: 22,
               child: CircleAvatar(
-                backgroundColor: UiColors.accentColor2,
-              ),
+                  backgroundColor: UiColors.secondaryColor,
+                  ),
             ),
             const SizedBox(width: 10),
           ],
@@ -44,10 +43,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onSelected: (String result) {
             switch (result) {
               case 'settings':
-                Navigator.push(context, SettingsPage.route());
+                context.router.push(const SettingsRoute());
                 break;
               case 'about':
-                Navigator.push(context, AboutPage.route());
+                context.router.push(const AboutRoute());
                 break;
             }
           },

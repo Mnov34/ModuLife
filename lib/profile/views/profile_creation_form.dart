@@ -43,13 +43,13 @@ class _AvatarUpload extends StatelessWidget {
     return const CircleAvatar(
       key: Key('profileCreationForm_avatarUpload_circleAvatar'),
       radius: 73,
-      backgroundColor: UiColors.accentColor1,
+      backgroundColor: UiColors.primaryColor,
       child: CircleAvatar(
         radius: 70,
-        backgroundColor: UiColors.accentColor2,
+        backgroundColor: UiColors.secondaryColor,
         child: Icon(
           Icons.upload,
-          color: UiColors.accentColor1,
+          color: UiColors.primaryColor,
           size: 40,
         ),
       ),

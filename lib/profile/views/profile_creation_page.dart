@@ -8,10 +8,6 @@ import 'package:modulife/widgets/custom_app_bar.dart';
 class ProfileCreationPage extends StatelessWidget {
   const ProfileCreationPage({super.key});
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const ProfileCreationPage());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

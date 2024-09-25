@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
-import 'package:modulife/home/home.dart';
-import 'package:modulife/splash/splash.dart';
+import 'package:modulife/utils/app_router.dart';
+import 'package:modulife_ui_colors/util/colors.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -32,29 +31,14 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  final Logger log = Logger();
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
-
-  NavigatorState get _navigator => _navigatorKey.currentState!;
+  final AppRouter _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: _navigatorKey,
-      builder: (BuildContext context, Widget? child) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          try {
-            _navigator.pushAndRemoveUntil<void>(
-              HomePage.route(),
-              (Route<dynamic> route) => false,
-            );
-          } catch (e) {
-            log.d('Error: $e');
-          }
-        });
-        return child ?? Container();
-      },
-      onGenerateRoute: (RouteSettings _) => SplashPage.route(),
+    return MaterialApp.router(
+      routerConfig: _appRouter.config(),
+      theme: ThemeData(scaffoldBackgroundColor: UiColors.background),
+      //onGenerateRoute: (RouteSettings _) => RouteUtils.createRoute(page: const SplashPage()),
     );
   }
 }

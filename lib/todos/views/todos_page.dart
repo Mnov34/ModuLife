@@ -1,34 +1,39 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:modulife/widgets/custom_app_bar.dart';
 
 import 'package:modulife_todos/modulife_todos.dart';
 import 'package:modulife_todos/repositories/folder_repository.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
-import 'package:modulife/widgets/custom_app_bar.dart';
 
-class TodoPage extends StatefulWidget {
+@RoutePage()
+class TodoPage extends StatefulWidget implements AutoRouteWrapper {
   const TodoPage({super.key});
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (BuildContext context) {
-      return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (BuildContext _) =>
-                  FolderBloc(folderRepository: FolderRepository())
-                    ..add(LoadFolders())),
-          BlocProvider(
-            create: (BuildContext _) =>
-                TodoBloc(todoRepository: TodoRepository())..add(LoadTodos()),
-          )
-        ],
-        child: const TodoPage(),
-      );
-    });
-  }
+  static final TodoRepository todoRepository = TodoRepository();
+  static final FolderRepository folderRepository = FolderRepository();
 
   @override
   State<TodoPage> createState() => _TodoPageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<TodoBloc>(
+            create: (BuildContext context) =>
+                TodoBloc(todoRepository: TodoPage.todoRepository)
+                  ..add(LoadTodos())),
+        BlocProvider<FolderBloc>(
+            create: (BuildContext context) =>
+                FolderBloc(folderRepository: TodoPage.folderRepository)
+                  ..add(LoadFolders())),
+      ],
+      child: this,
+    );
+  }
 }
 
 class _TodoPageState extends State<TodoPage> {
@@ -40,16 +45,9 @@ class _TodoPageState extends State<TodoPage> {
         profile: null,
         isBackButtonEnabled: true,
       ),
-      body: Stack(
-        children: [
-          Container(
-            color: UiColors.background,
-          ),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: TodoList(),
-          ),
-        ],
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: TodoList(),
       ),
       floatingActionButton: PopupMenuButton<String>(
         offset: const Offset(0, -122),
@@ -60,28 +58,28 @@ class _TodoPageState extends State<TodoPage> {
           const PopupMenuItem(
             value: 'Folder',
             child: ListTile(
-              leading:
-                  Icon(Icons.create_new_folder, color: UiColors.accentColor2),
+              leading: Icon(Icons.create_new_folder,
+                  color: UiColors.secondaryColor),
               title: Text('Create Folder'),
             ),
           ),
           const PopupMenuItem(
             value: 'TODO',
             child: ListTile(
-              leading: Icon(Icons.note_add, color: UiColors.accentColor2),
+              leading: Icon(Icons.note_add, color: UiColors.secondaryColor),
               title: Text('Create TODO'),
             ),
           ),
         ],
         icon: const CircleAvatar(
           radius: 33,
-          backgroundColor: UiColors.accentColor1,
+          backgroundColor: UiColors.primaryColor,
           child: CircleAvatar(
             radius: 30,
-            backgroundColor: UiColors.accentColor2,
+            backgroundColor: UiColors.secondaryColor,
             child: Icon(
               Icons.add,
-              color: UiColors.accentColor1,
+              color: UiColors.primaryColor,
               size: 27,
             ),
           ),
@@ -98,7 +96,7 @@ class _TodoPageState extends State<TodoPage> {
       context: parentContext,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          backgroundColor: UiColors.accentColor1,
+          backgroundColor: UiColors.primaryColor,
           title: Text(
             'Add $type',
             style: const TextStyle(color: UiColors.background),
@@ -163,6 +161,22 @@ class _TodoPageState extends State<TodoPage> {
                       title: controller.text,
                       folderId: selectedFolder?.id,
                     );
+
+                    if (selectedFolder != null && selectedFolder?.id != null) {
+                      final List<Todo> updatedFolderTodos =
+                          List<Todo>.from(selectedFolder!.todos)..add(newTodo);
+
+                      final Folder updatedFolder = Folder(
+                        id: selectedFolder?.id,
+                        title: selectedFolder!.title,
+                        todos: updatedFolderTodos,
+                      );
+
+                      parentContext
+                          .read<FolderBloc>()
+                          .add(UpdateFolder(folder: updatedFolder));
+                    }
+
                     parentContext.read<TodoBloc>().add(AddTodo(todo: newTodo));
                   } else if (type == 'Folder') {
                     final Folder newFolder = Folder(title: controller.text);
@@ -174,9 +188,9 @@ class _TodoPageState extends State<TodoPage> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: UiColors.accentColor2),
+                  backgroundColor: UiColors.secondaryColor),
               child: const Text('Add',
-                  style: TextStyle(color: UiColors.accentColor1)),
+                  style: TextStyle(color: UiColors.primaryColor)),
             ),
           ],
         );
