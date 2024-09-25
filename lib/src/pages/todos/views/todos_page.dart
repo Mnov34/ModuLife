@@ -2,7 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:modulife/src/widgets/custom_app_bar.dart';
+import 'package:modulife/src/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:modulife/src/widgets/custom_scaffold.dart';
 
 import 'package:modulife_todos/modulife_todos.dart';
 import 'package:modulife_todos/repositories/folder_repository.dart';
@@ -39,12 +40,8 @@ class TodoPage extends StatefulWidget implements AutoRouteWrapper {
 class _TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'TODO list',
-        profile: null,
-        isBackButtonEnabled: true,
-      ),
+    return CustomScaffold(
+      title: 'TODO list',
       body: const Padding(
         padding: EdgeInsets.all(16.0),
         child: TodoList(),
@@ -58,8 +55,8 @@ class _TodoPageState extends State<TodoPage> {
           const PopupMenuItem(
             value: 'Folder',
             child: ListTile(
-              leading: Icon(Icons.create_new_folder,
-                  color: UiColors.secondaryColor),
+              leading:
+                  Icon(Icons.create_new_folder, color: UiColors.secondaryColor),
               title: Text('Create Folder'),
             ),
           ),

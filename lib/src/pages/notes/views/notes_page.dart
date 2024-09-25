@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modulife/src/widgets/custom_scaffold.dart';
 
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
-import 'package:modulife/src/widgets/custom_app_bar.dart';
+import 'package:modulife/src/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:modulife_notes/modulife_notes.dart';
 
 class NotesPage extends StatefulWidget {
@@ -23,12 +24,8 @@ class NotesPage extends StatefulWidget {
 class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Notes',
-        profile: null,
-        isBackButtonEnabled: true,
-      ),
+    return CustomScaffold(
+      title: 'Notes',
       body: Stack(
         children: [
           Container(

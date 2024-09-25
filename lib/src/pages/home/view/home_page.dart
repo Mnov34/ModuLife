@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modulife/src/pages/todos/todos.dart';
 import 'package:modulife/src/pages/profile/profile.dart';
 import 'package:modulife/src/utils/app_router.gr.dart';
-import 'package:modulife/src/widgets/custom_app_bar.dart';
+import 'package:modulife/src/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:modulife/src/utils/app_router.dart';
+import 'package:modulife/src/widgets/custom_scaffold.dart';
 
 import 'package:modulife_todos/modulife_todos.dart';
 import 'package:modulife_todos/repositories/folder_repository.dart';
@@ -22,12 +23,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Home',
-        profile: null,
-        isBackButtonEnabled: false,
-      ),
+    return CustomScaffold(
+      title: 'Home',
       body: Column(
         children: [
           const Padding(
