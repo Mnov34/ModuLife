@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
-import 'package:modulife/widgets/custom_app_bar.dart';
+import 'package:modulife/src/widgets/custom_app_bar.dart';
 import 'package:modulife_notes/modulife_notes.dart';
 
 class NotesPage extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:modulife/profile/models/models.dart';
-import 'package:modulife/utils/app_router.gr.dart';
+import 'package:modulife/src/pages/profile/models/models.dart';
+import 'package:modulife/src/utils/app_router.gr.dart';
 import 'package:modulife_ui_colors/util/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

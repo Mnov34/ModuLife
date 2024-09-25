@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:modulife/utils/app_router.dart';
+import 'package:modulife/src/utils/app_router.dart';
 import 'package:modulife_ui_colors/util/colors.dart';
 
 class App extends StatefulWidget {
@@ -37,7 +37,9 @@ class _AppViewState extends State<AppView> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: _appRouter.config(),
-      theme: ThemeData(scaffoldBackgroundColor: UiColors.background),
+      theme: ThemeData(
+        scaffoldBackgroundColor: UiColors.background,
+      ),
       //onGenerateRoute: (RouteSettings _) => RouteUtils.createRoute(page: const SplashPage()),
     );
   }

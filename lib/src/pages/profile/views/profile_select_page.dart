@@ -1,10 +1,10 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:modulife/home/home.dart';
-import 'package:modulife/profile/profile.dart';
-import 'package:modulife/utils/app_router.dart';
+import 'package:modulife/src/pages/home/home.dart';
+import 'package:modulife/src/pages/profile/profile.dart';
+import 'package:modulife/src/utils/app_router.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
-import 'package:modulife/widgets/custom_app_bar.dart';
+import 'package:modulife/src/widgets/custom_app_bar.dart';
 
 @RoutePage()
 class ProfileSelectPage extends StatelessWidget {

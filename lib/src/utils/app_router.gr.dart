@@ -9,11 +9,12 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i6;
-import 'package:modulife/about/views/about_page.dart' as _i1;
-import 'package:modulife/home/view/home_page.dart' as _i2;
-import 'package:modulife/profile/views/profile_select_page.dart' as _i3;
-import 'package:modulife/settings/views/settings_page.dart' as _i4;
-import 'package:modulife/todos/views/todos_page.dart' as _i5;
+import 'package:modulife/src/pages/about/views/about_page.dart' as _i1;
+import 'package:modulife/src/pages/home/view/home_page.dart' as _i2;
+import 'package:modulife/src/pages/profile/views/profile_select_page.dart'
+    as _i3;
+import 'package:modulife/src/pages/settings/views/settings_page.dart' as _i4;
+import 'package:modulife/src/pages/todos/views/todos_page.dart' as _i5;
 
 /// generated route for
 /// [_i1.AboutPage]

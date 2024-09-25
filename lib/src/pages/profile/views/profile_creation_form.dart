@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:modulife/profile/bloc/profile_bloc.dart';
-import 'package:modulife/profile/models/models.dart';
+import 'package:modulife/src/pages/profile/bloc/profile_bloc.dart';
+import 'package:modulife/src/pages/profile/models/models.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class ProfileCreationForm extends StatelessWidget {

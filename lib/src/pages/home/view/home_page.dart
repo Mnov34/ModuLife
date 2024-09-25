@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:modulife/todos/todos.dart';
-import 'package:modulife/profile/profile.dart';
-import 'package:modulife/utils/app_router.gr.dart';
-import 'package:modulife/widgets/custom_app_bar.dart';
-import 'package:modulife/utils/app_router.dart';
+import 'package:modulife/src/pages/todos/todos.dart';
+import 'package:modulife/src/pages/profile/profile.dart';
+import 'package:modulife/src/utils/app_router.gr.dart';
+import 'package:modulife/src/widgets/custom_app_bar.dart';
+import 'package:modulife/src/utils/app_router.dart';
 
 import 'package:modulife_todos/modulife_todos.dart';
 import 'package:modulife_todos/repositories/folder_repository.dart';
