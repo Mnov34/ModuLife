@@ -10,12 +10,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     required this.profile,
-    required this.isBackButtonEnabled,
   });
 
   final String title;
   final Profile? profile;
-  final bool isBackButtonEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +26,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               backgroundColor: UiColors.primaryColor,
               radius: 22,
               child: CircleAvatar(
-                  backgroundColor: UiColors.secondaryColor,
-                  ),
+                backgroundColor: UiColors.secondaryColor,
+              ),
             ),
             const SizedBox(width: 10),
           ],
@@ -74,7 +72,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ],
-      automaticallyImplyLeading: isBackButtonEnabled,
+      leading: IconButton(
+        icon: const Icon(Icons.menu),
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
+      ),
+      automaticallyImplyLeading: false,
     );
   }
 
