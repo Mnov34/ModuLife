@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modulife_todos/blocs/todo/todo_bloc.dart';
-import 'package:modulife_todos/blocs/folder/folder_bloc.dart';
-import 'package:modulife_todos/models/models.dart';
+import 'package:modulife_todos/modulife_todos.dart';
+import 'package:modulife_todos/repositories/folder_repository.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class TodoList extends StatefulWidget {
@@ -30,53 +29,53 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        _buildSearchBar(),
-        _buildTodoCounter(context),
-        Expanded(
-          child: BlocBuilder<FolderBloc, FolderState>(
-            builder: (BuildContext context, FolderState folderState) {
-              return BlocBuilder<TodoBloc, TodoState>(
-                builder: (BuildContext context, TodoState todoState) {
-                  if (todoState.status == TodoStatus.initial &&
-                      folderState.status == FolderStatus.initial) {
-                    return _empty;
-                  }
-
-                  if (todoState.status == TodoStatus.loading ||
-                      folderState.status == FolderStatus.loading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (todoState.status == TodoStatus.success &&
-                      folderState.status == FolderStatus.success) {
-                    if (todoState.allTodos.isEmpty &&
-                        folderState.allFolders.isEmpty) {
+        children: [
+          _buildSearchBar(),
+          _buildTodoCounter(context),
+          Expanded(
+            child: BlocBuilder<FolderBloc, FolderState>(
+              builder: (BuildContext context, FolderState folderState) {
+                return BlocBuilder<TodoBloc, TodoState>(
+                  builder: (BuildContext context, TodoState todoState) {
+                    if (todoState.status == TodoStatus.initial &&
+                        folderState.status == FolderStatus.initial) {
                       return _empty;
                     }
 
-                    List<Widget> todoWidgets =
-                        _buildFoldersAndTodos(context, todoState, folderState);
+                    if (todoState.status == TodoStatus.loading ||
+                        folderState.status == FolderStatus.loading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (todoState.status == TodoStatus.success &&
+                        folderState.status == FolderStatus.success) {
+                      if (todoState.allTodos.isEmpty &&
+                          folderState.allFolders.isEmpty) {
+                        return _empty;
+                      }
 
-                    return ListView(
-                      padding: const EdgeInsets.all(16.0),
-                      children: todoWidgets,
-                    );
-                  } else if (todoState.status == TodoStatus.failure ||
-                      folderState.status == FolderStatus.failure) {
-                    return const Center(
-                      child: Text(
-                        'Error loading TODOs and Folders.',
-                        style: TextStyle(color: Colors.red, fontSize: 18),
-                      ),
-                    );
-                  }
-                  return const Center(child: Text('Unknown state'));
-                },
-              );
-            },
+                      List<Widget> todoWidgets = _buildFoldersAndTodos(
+                          context, todoState, folderState);
+
+                      return ListView(
+                        padding: const EdgeInsets.all(16.0),
+                        children: todoWidgets,
+                      );
+                    } else if (todoState.status == TodoStatus.failure ||
+                        folderState.status == FolderStatus.failure) {
+                      return const Center(
+                        child: Text(
+                          'Error loading TODOs and Folders.',
+                          style: TextStyle(color: Colors.red, fontSize: 18),
+                        ),
+                      );
+                    }
+                    return const Center(child: Text('Unknown state'));
+                  },
+                );
+              },
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
   }
 
   List<Widget> _buildFoldersAndTodos(
@@ -121,8 +120,8 @@ class _TodoListState extends State<TodoList> {
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       decoration: BoxDecoration(
         color: allTodosCompleted
-            ? UiColors.accentColor2
-            : UiColors.accentColor1,
+            ? UiColors.secondaryColor
+            : UiColors.primaryColor,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(
@@ -236,20 +235,21 @@ class _TodoListState extends State<TodoList> {
 
   void _showEditFolderDialog(BuildContext context, Folder folder) {
     final TextEditingController controller =
-    TextEditingController(text: folder.title);
+        TextEditingController(text: folder.title);
 
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          backgroundColor: UiColors.accentColor1,
+          backgroundColor: UiColors.primaryColor,
           title: const Text(
             'Edit Folder',
             style: TextStyle(color: UiColors.background),
           ),
           content: TextField(
             controller: controller,
-            decoration: const InputDecoration(hintText: 'Enter new Folder title'),
+            decoration:
+                const InputDecoration(hintText: 'Enter new Folder title'),
           ),
           actions: [
             TextButton(
@@ -263,15 +263,17 @@ class _TodoListState extends State<TodoList> {
               onPressed: () {
                 if (controller.text.isNotEmpty) {
                   final Folder updatedFolder =
-                  folder.copyWith(title: controller.text);
-                  context.read<FolderBloc>().add(UpdateFolder(folder: updatedFolder));
+                      folder.copyWith(title: controller.text);
+                  context
+                      .read<FolderBloc>()
+                      .add(UpdateFolder(folder: updatedFolder));
                   Navigator.of(dialogContext).pop();
                 }
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: UiColors.accentColor2),
+                  backgroundColor: UiColors.secondaryColor),
               child: const Text('Update',
-                  style: TextStyle(color: UiColors.accentColor1)),
+                  style: TextStyle(color: UiColors.primaryColor)),
             ),
           ],
         );
@@ -284,14 +286,17 @@ class _TodoListState extends State<TodoList> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          backgroundColor: UiColors.accentColor1,
+          backgroundColor: UiColors.primaryColor,
           title: const Text('Delete Folder'),
           content: Text(
               'Are you sure you want to delete the "${folder.title}" folder?'),
           actions: [
             ElevatedButton(
               onPressed: () {
+                final List<Todo> todosToDelete = List<Todo>.from(folder.todos);
+
                 context.read<FolderBloc>().add(DeleteFolder(folder: folder));
+                context.read<TodoBloc>().add(DeleteTodo(todos: todosToDelete));
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
@@ -320,9 +325,7 @@ class _TodoListState extends State<TodoList> {
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: BoxDecoration(
-        color: todo.isDone
-            ? UiColors.accentColor2
-            : UiColors.accentColor1,
+        color: todo.isDone ? UiColors.secondaryColor : UiColors.primaryColor,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(
@@ -365,7 +368,7 @@ class _TodoListState extends State<TodoList> {
               ),
               Checkbox(
                 value: todo.isDone,
-                activeColor: UiColors.accentColor3,
+                activeColor: UiColors.accentColor,
                 onChanged: (bool? value) {
                   context.read<TodoBloc>().add(ToggleTodoStatus(todo: todo));
                 },
@@ -392,9 +395,10 @@ class _TodoListState extends State<TodoList> {
                         style: TextStyle(color: Colors.black),
                       ),
                       SizedBox(width: 5),
-                      Icon(Icons.edit, color: todo.isDone
-                          ? UiColors.accentColor1
-                          : UiColors.accentColor2),
+                      Icon(Icons.edit,
+                          color: todo.isDone
+                              ? UiColors.primaryColor
+                              : UiColors.secondaryColor),
                     ],
                   ),
                 ),
@@ -410,9 +414,10 @@ class _TodoListState extends State<TodoList> {
                         style: TextStyle(color: Colors.black),
                       ),
                       SizedBox(width: 5),
-                      Icon(Icons.delete, color: todo.isDone
-                          ? UiColors.dangerRed2
-                          : UiColors.dangerRed),
+                      Icon(Icons.delete,
+                          color: todo.isDone
+                              ? UiColors.dangerRed2
+                              : UiColors.dangerRed),
                     ],
                   ),
                 ),
@@ -437,7 +442,7 @@ class _TodoListState extends State<TodoList> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          backgroundColor: UiColors.accentColor1,
+          backgroundColor: UiColors.primaryColor,
           title: const Text(
             'Edit TODO',
             style: TextStyle(color: UiColors.background),
@@ -464,9 +469,9 @@ class _TodoListState extends State<TodoList> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: UiColors.accentColor2),
+                  backgroundColor: UiColors.secondaryColor),
               child: const Text('Update',
-                  style: TextStyle(color: UiColors.accentColor1)),
+                  style: TextStyle(color: UiColors.primaryColor)),
             ),
           ],
         );
@@ -479,14 +484,14 @@ class _TodoListState extends State<TodoList> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          backgroundColor: UiColors.accentColor1,
+          backgroundColor: UiColors.primaryColor,
           title: const Text('Delete Folder'),
-          content: Text(
-              'Are you sure you want to delete the "${todo.title}" TODO?'),
+          content:
+              Text('Are you sure you want to delete the "${todo.title}" TODO?'),
           actions: [
             ElevatedButton(
               onPressed: () {
-                context.read<TodoBloc>().add(DeleteTodo(todo: todo));
+                context.read<TodoBloc>().add(DeleteTodo(todos: [todo]));
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
@@ -517,19 +522,19 @@ class _TodoListState extends State<TodoList> {
                 folderState.allFolders
                     .fold<int>(0, (sum, folder) => sum + folder.todos.length);
             final int completedTodos = todoState.allTodos
-                .where((todo) => todo.isDone)
-                .length +
+                    .where((todo) => todo.isDone)
+                    .length +
                 folderState.allFolders.fold<int>(
                     0,
-                        (int sum, Folder folder) =>
-                    sum + folder.todos.where((todo) => todo.isDone).length);
+                    (int sum, Folder folder) =>
+                        sum + folder.todos.where((todo) => todo.isDone).length);
 
             return Text(
               'Total: $totalTodos, Completed: $completedTodos',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: UiColors.accentColor1,
+                color: UiColors.primaryColor,
               ),
             );
           },
@@ -552,7 +557,7 @@ class _TodoListState extends State<TodoList> {
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
         ),
         filled: true,
-        fillColor: UiColors.accentColor1,
+        fillColor: UiColors.primaryColor,
       ),
     );
   }

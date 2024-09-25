@@ -50,8 +50,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoState> emit) async {
     emit(state.copyWith(status: TodoStatus.loading));
 
-    final List<Todo> updatedTodos =
-        state.allTodos.where((Todo todo) => todo.id != event.todo.id).toList();
+    final List<Todo> updatedTodos = state.allTodos
+        .where((Todo todo) => !event.todos.any((Todo t) => t.id == todo.id))
+        .toList();
 
     emit(state.copyWith(
       allTodos: updatedTodos,

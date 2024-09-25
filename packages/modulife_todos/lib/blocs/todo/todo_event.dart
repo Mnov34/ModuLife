@@ -26,12 +26,12 @@ final class UpdateTodo extends TodoEvent {
 }
 
 final class DeleteTodo extends TodoEvent {
-  final Todo todo;
+  final List<Todo> todos;
 
-  const DeleteTodo({required this.todo});
+  const DeleteTodo({required List<Todo> todos}) : todos = todos;
 
   @override
-  List<Object> get props => [todo];
+  List<Object> get props => [todos];
 }
 
 final class ToggleTodoStatus extends TodoEvent {
