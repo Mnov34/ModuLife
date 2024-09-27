@@ -1,7 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 
-import 'package:modulife/src/widgets/custom_scaffold.dart';
+import 'package:modulife/src/widgets/custom_scaffold/custom_scaffold.dart';
 
 @RoutePage()
 class AboutPage extends StatefulWidget {

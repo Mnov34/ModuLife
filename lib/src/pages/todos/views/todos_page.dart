@@ -2,8 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:modulife/src/widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:modulife/src/widgets/custom_scaffold.dart';
+import 'package:modulife/src/widgets/custom_scaffold/custom_scaffold.dart';
 
 import 'package:modulife_todos/modulife_todos.dart';
 import 'package:modulife_todos/repositories/folder_repository.dart';

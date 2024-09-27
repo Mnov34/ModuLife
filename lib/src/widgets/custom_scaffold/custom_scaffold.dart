@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:modulife/src/widgets/custom_app_bar/barrel.dart';
+import 'custom_app_bar/barrel.dart';
 
 class CustomScaffold extends StatelessWidget {
   final String title;

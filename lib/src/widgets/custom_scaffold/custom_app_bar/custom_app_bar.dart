@@ -42,9 +42,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             switch (result) {
               case 'settings':
                 context.router.push(const SettingsRoute());
+                context.router.maybePop();
                 break;
               case 'about':
                 context.router.push(const AboutRoute());
+                context.router.maybePop();
+                break;
+              case 'bug report':
+                context.router.push(const BugReportRoute());
+                context.router.maybePop();
                 break;
             }
           },
@@ -66,6 +72,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Icon(Icons.question_mark, color: Colors.black),
                   SizedBox(width: 10),
                   Text('about'),
+                ],
+              ),
+            ),
+            const PopupMenuItem<String>(
+              value: 'bug report',
+              child: Row(
+                children: [
+                  Icon(Icons.bug_report, color: Colors.black),
+                  SizedBox(width: 10),
+                  Text('report a bug'),
                 ],
               ),
             ),
