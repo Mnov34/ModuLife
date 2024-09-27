@@ -14,6 +14,11 @@ class StorageUtils {
 
   SharedPreferences? _prefs;
 
+  /// Setter for assigning mock SharedPreferences for testing
+  void setMockPrefs(SharedPreferences sharedPreferences) {
+    _prefs = sharedPreferences;
+  }
+
   /// Initialize the SharedPreferences instance
   Future<void> init() async {
     try {
