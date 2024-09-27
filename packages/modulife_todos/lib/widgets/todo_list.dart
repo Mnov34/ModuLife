@@ -333,8 +333,8 @@ class _TodoListState extends State<TodoList> {
           Row(
             children: [
               todo.isDone
-                  ? Icon(Icons.task_alt)
-                  : Icon(Icons.radio_button_unchecked),
+                  ? Icon(Icons.task)
+                  : Icon(Icons.task_outlined),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Container(
