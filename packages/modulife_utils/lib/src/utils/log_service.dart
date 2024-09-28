@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 
 class LogService {
-  static final Logger _logger = Logger(
+  static Logger _logger = Logger(
     printer: PrettyPrinter(
       methodCount: 5,
       dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
@@ -9,6 +9,11 @@ class LogService {
   );
 
   static final List<String> _logMemory = [];
+
+  /// Setter for assigning mock Logger for testing
+  static set testLogger(Logger logger) {
+    _logger = logger;
+  }
 
   Future<void> init() async {
     _logger.i("Logger initialized.");
