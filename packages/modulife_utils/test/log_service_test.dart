@@ -12,7 +12,7 @@ void main() {
 
   setUp(() {
     mockLogger = MockLogger();
-    LogService.testLogger = mockLogger;  // Use the setter method to replace _logger with a mock
+    LogService.testLogger = mockLogger;
   });
 
   group('LogService Tests', () {
@@ -47,9 +47,9 @@ void main() {
       }
 
       String logs = LogService.getLogs();
-      expect(logs, contains("Log Entry 100"));  // First 100 entries should be removed
-      expect(logs, contains("Log Entry 599"));  // The last entry should be present
-      expect(logs, isNot(contains("Log Entry 0")));  // The earliest entries should be dropped
+      expect(logs, contains("Log Entry 100"));
+      expect(logs, contains("Log Entry 599"));
+      expect(logs, isNot(contains("Log Entry 0")));
     });
   });
 }
