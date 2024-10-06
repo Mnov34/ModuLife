@@ -7,42 +7,31 @@ import 'package:modulife_utils/modulife_utils.dart';
 class FolderRepository {
   static const String folderKey = 'todos_folder_key';
 
-  /// Save the list of folders to storage
-  Future<void> saveFolders(List<Folder> folder) async {
-    try {
-      final String folderJson =
-          jsonEncode(folder.map((Folder folder) => folder.toMap()).toList());
+  final StorageUtils _prefs = StorageUtils();
 
-      await StorageUtils().saveString(folderKey, folderJson);
-    } catch (e) {
-      LogService.e('Failed to save Folders', e);
-    }
+  /// Save the list of todos folders to storage
+  Future<void> saveFolders(List<Folder> folder) async {
+    final String folderJson =
+        jsonEncode(folder.map((Folder folder) => folder.toMap()).toList());
+
+    await _prefs.saveString(folderKey, folderJson);
   }
 
-  /// Load the list of folders from storage
+  /// Load the list of todos folders from storage
   Future<List<Folder>> loadFolders() async {
-    try {
-      final String? folderJson = StorageUtils().getString(folderKey);
+    final String? folderJson = _prefs.getString(folderKey);
 
-      if (folderJson != null) {
-        final List<dynamic> jsonList = jsonDecode(folderJson);
-        return jsonList.map((dynamic json) => Folder.fromMap(json)).toList();
-      } else {
-        LogService.i('No folders found in storage');
-        return [];
-      }
-    } catch (e) {
-      LogService.e('Failed to load folders', e);
+    if (folderJson != null) {
+      final List<dynamic> jsonList = jsonDecode(folderJson);
+      return jsonList.map((dynamic json) => Folder.fromMap(json)).toList();
+    } else {
+      LogService.i('No folders found in storage');
       return [];
     }
   }
 
   /// Clear all folders from storage
   Future<void> clearFolders() async {
-    try {
-      await StorageUtils().remove(folderKey);
-    } catch (e) {
-      LogService.e('Failed to clear folders', e);
-    }
+    await _prefs.remove(folderKey);
   }
 }
