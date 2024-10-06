@@ -1,6 +1,6 @@
 name: modulife_utils
 description: "A new Flutter package project."
-version: 0.0.1+2
+version: 0.0.2
 
 environment:
   sdk: '>=3.4.3 <4.0.0'

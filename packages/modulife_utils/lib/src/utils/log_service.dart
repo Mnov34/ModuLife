@@ -1,22 +1,39 @@
+import 'dart:async';
+
 import 'package:logger/logger.dart';
+import 'package:modulife_utils/modulife_utils.dart';
 
 class LogService {
   static Logger _logger = Logger(
-    printer: PrettyPrinter(
-      methodCount: 5,
-      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-    ),
-  );
+      printer: PrettyPrinter(
+          methodCount: 5,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart));
+
+  static final LogService _instance = LogService._internal();
+
+  factory LogService() => _instance;
+
+  LogService._internal();
+
+  final Completer<void> _completer = Completer<void>();
 
   static final List<String> _logMemory = [];
+
+  Future<void> init() async {
+    if (_completer.isCompleted) return;
+
+    try {
+      LogService.i("Logger initialized.");
+    } catch (e) {
+      LogService.e('Failed to initialize Logger.', e);
+    } finally {
+      _completer.complete();
+    }
+  }
 
   /// Setter for assigning mock Logger for testing
   static set testLogger(Logger logger) {
     _logger = logger;
-  }
-
-  Future<void> init() async {
-    _logger.i("Logger initialized.");
   }
 
   /// Log and store trace messages

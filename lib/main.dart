@@ -11,6 +11,7 @@ void main() {
       WidgetsFlutterBinding.ensureInitialized();
 
       await LogService().init();
+      await StorageUtils().init();
 
       runApp(const App());
     },

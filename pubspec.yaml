@@ -2,7 +2,7 @@ name: modulife
 description: "Simply an easier life."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 2.2.0
+version: 2.2.1
 
 repository: https://github.com/Mnov34/ModuLife
 homepage: https://github.com/Mnov34/ModuLife
