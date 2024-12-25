@@ -14,6 +14,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: AboutRoute.page),
         AutoRoute(page: SettingsRoute.page),
         AutoRoute(page: BugReportRoute.page),
+        AutoRoute(page: NotesRoute.page),
       ];
 
   @override

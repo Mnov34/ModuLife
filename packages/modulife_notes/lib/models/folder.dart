@@ -62,11 +62,12 @@ class Folder extends Equatable {
           map['notes']?.map((dynamic x) => Note.fromMap(x)) ?? []),
       creationDate: DateTime.parse(
           map['creationDate'] ?? DateTime.now().toIso8601String()),
-      updateDate: DateTime.parse(
-          map['updateDate'] ?? DateTime.now().toIso8601String()),
+      updateDate:
+          DateTime.parse(map['updateDate'] ?? DateTime.now().toIso8601String()),
     );
   }
 
   @override
-  List<Object> get props => [id, title, description, notes, creationDate];
+  List<Object> get props =>
+      [id, title, description, notes, creationDate, updateDate];
 }

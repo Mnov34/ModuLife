@@ -29,53 +29,53 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: [
-          _buildSearchBar(),
-          _buildTodoCounter(context),
-          Expanded(
-            child: BlocBuilder<FolderBloc, FolderState>(
-              builder: (BuildContext context, FolderState folderState) {
-                return BlocBuilder<TodoBloc, TodoState>(
-                  builder: (BuildContext context, TodoState todoState) {
-                    if (todoState.status == TodoStatus.initial &&
-                        folderState.status == FolderStatus.initial) {
+      children: [
+        _buildSearchBar(),
+        _buildTodoCounter(context),
+        Expanded(
+          child: BlocBuilder<FolderBloc, FolderState>(
+            builder: (BuildContext context, FolderState folderState) {
+              return BlocBuilder<TodoBloc, TodoState>(
+                builder: (BuildContext context, TodoState todoState) {
+                  if (todoState.status == TodoStatus.initial &&
+                      folderState.status == FolderStatus.initial) {
+                    return _empty;
+                  }
+
+                  if (todoState.status == TodoStatus.loading ||
+                      folderState.status == FolderStatus.loading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (todoState.status == TodoStatus.success &&
+                      folderState.status == FolderStatus.success) {
+                    if (todoState.allTodos.isEmpty &&
+                        folderState.allFolders.isEmpty) {
                       return _empty;
                     }
 
-                    if (todoState.status == TodoStatus.loading ||
-                        folderState.status == FolderStatus.loading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (todoState.status == TodoStatus.success &&
-                        folderState.status == FolderStatus.success) {
-                      if (todoState.allTodos.isEmpty &&
-                          folderState.allFolders.isEmpty) {
-                        return _empty;
-                      }
+                    List<Widget> todoWidgets =
+                        _buildFoldersAndTodos(context, todoState, folderState);
 
-                      List<Widget> todoWidgets = _buildFoldersAndTodos(
-                          context, todoState, folderState);
-
-                      return ListView(
-                        padding: const EdgeInsets.all(16.0),
-                        children: todoWidgets,
-                      );
-                    } else if (todoState.status == TodoStatus.failure ||
-                        folderState.status == FolderStatus.failure) {
-                      return const Center(
-                        child: Text(
-                          'Error loading TODOs and Folders.',
-                          style: TextStyle(color: Colors.red, fontSize: 18),
-                        ),
-                      );
-                    }
-                    return const Center(child: Text('Unknown state'));
-                  },
-                );
-              },
-            ),
+                    return ListView(
+                      padding: const EdgeInsets.all(16.0),
+                      children: todoWidgets,
+                    );
+                  } else if (todoState.status == TodoStatus.failure ||
+                      folderState.status == FolderStatus.failure) {
+                    return const Center(
+                      child: Text(
+                        'Error loading TODOs and Folders.',
+                        style: TextStyle(color: Colors.red, fontSize: 18),
+                      ),
+                    );
+                  }
+                  return const Center(child: Text('Unknown state'));
+                },
+              );
+            },
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 
   List<Widget> _buildFoldersAndTodos(
@@ -119,9 +119,8 @@ class _TodoListState extends State<TodoList> {
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       decoration: BoxDecoration(
-        color: allTodosCompleted
-            ? UiColors.secondaryColor
-            : UiColors.primaryColor,
+        color:
+            allTodosCompleted ? UiColors.secondaryColor : UiColors.primaryColor,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(
@@ -332,9 +331,7 @@ class _TodoListState extends State<TodoList> {
         children: [
           Row(
             children: [
-              todo.isDone
-                  ? Icon(Icons.task)
-                  : Icon(Icons.task_outlined),
+              todo.isDone ? Icon(Icons.task) : Icon(Icons.task_outlined),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Container(

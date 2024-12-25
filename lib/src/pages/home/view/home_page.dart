@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
 
   List<String> get installedModules => [
         'TODO list',
+        'Notes',
       ];
 
   @override
@@ -62,7 +63,7 @@ class HomePage extends StatelessWidget {
                       String moduleName = installedModules[index];
                       return GestureDetector(
                         onTap: () {
-                          context.router.push(const TodoRoute());
+                          context.router.push(_getModuleRoute(moduleName));
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -133,5 +134,16 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _getModuleRoute(String module) {
+    switch (module) {
+      case 'TODO list':
+        return const TodoRoute();
+      case 'Notes':
+        return const NotesRoute();
+      default:
+        return null;
+    }
   }
 }

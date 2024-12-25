@@ -43,13 +43,16 @@ class _BugReportPageState extends State<BugReportPage> {
     );
   }
 
-  void _submitReport() {
+  void _submitReport() async {
     String description = _descriptionController.text;
     String logs = LogService.getLogs();
+    /*List<String> myEmailAsList = [String.fromEnvironment('EMAIL', defaultValue: '')];
 
-    // TODO implement bug report sending to my email
-    LogService.d('Bug Report Description: $description');
-    LogService.d('Attached Logs: $logs');
+    final Email email = Email(
+      recipients: myEmailAsList,
+      subject: 'ModuLife bug report ${DateTime.now().toIso8601String()}',
+      body:'User sent this as description: \n"$description"\n\nHere are attached logs: \n$logs',
+    );*/
 
     LogService.clearLogs();
 
@@ -58,5 +61,9 @@ class _BugReportPageState extends State<BugReportPage> {
     );
 
     _descriptionController.clear();
+
+/*
+    await FlutterEmailSender.send(email);
+*/
   }
 }

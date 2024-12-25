@@ -26,12 +26,12 @@ final class UpdateNote extends NoteEvent {
 }
 
 final class DeleteNote extends NoteEvent {
-  final Note note;
+  final List<Note> notes;
 
-  const DeleteNote({required this.note});
+  const DeleteNote({required List<Note> notes}) : notes = notes;
 
   @override
-  List<Object> get props => [note];
+  List<Object> get props => [notes];
 }
 
 final class LoadNotes extends NoteEvent {
