@@ -1,0 +1,28 @@
+library modulife_ui_colors;
+
+import 'package:flutter/material.dart';
+
+class UiColors {
+  UiColors._();
+
+  static const Color dangerRed = Color.fromRGBO(255, 0, 0, 1.0);
+  static const Color dangerRed2 = Color.fromRGBO(192, 44, 44, 1.0);
+
+  static const Color background = Color.fromRGBO(47, 47, 47, 1);
+
+  static const Color primaryColor = Color.fromRGBO(186, 242, 187, 1);
+  static const Color secondaryColor = Color.fromRGBO(77, 122, 77, 1);
+  static const Color accentColor = Color.fromRGBO(14,177,210,1);
+
+
+
+  static const Color primacyColorYellow = Color.fromRGBO(241, 143, 1, 1);
+  static const Color primaryColorYellow = Color.fromRGBO(105, 80, 44, 1);
+
+
+
+  static const Color backgroundPink = Color.fromRGBO(245, 230, 232, 1);
+
+  static const Color primaryColorPink = Color.fromRGBO(170, 161, 200, 1);
+  static const Color secondaryColorPink = Color.fromRGBO(213, 198, 224, 1);
+}
