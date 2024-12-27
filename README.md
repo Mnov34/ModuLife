@@ -58,4 +58,4 @@ We welcome contributions to Modulife. If you would like to contribute to the dev
 
 Modulife is licensed under the [GNU GENERAL PUBLIC LICENSE](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
-Thank you for choosing ProjectName! If you encounter any issues or have suggestions for improvements, please don't hesitate to [create an issue](https://github.com/Mnov34/ModuLife/issues) or [contribute to the project](#contributing). We look forward to your feedback and collaboration.
+Thank you for browsing through **ModuLife**! If you encounter any issues or have suggestions for improvements, please don't hesitate to [create an issue](https://github.com/Mnov34/ModuLife/issues) or [contribute to the project](#contributing). We look forward to your feedback and collaboration.
