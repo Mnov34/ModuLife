@@ -1,15 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:modulife/src/pages/todos/todos.dart';
-import 'package:modulife/src/pages/profile/profile.dart';
 import 'package:modulife/src/utils/app_router.gr.dart';
-import 'package:modulife/src/utils/app_router.dart';
 import 'package:modulife/src/widgets/custom_scaffold/custom_scaffold.dart';
-
-import 'package:modulife_todos/modulife_todos.dart';
-import 'package:modulife_todos/repositories/folder_repository.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 @RoutePage()
@@ -18,7 +10,6 @@ class HomePage extends StatelessWidget {
 
   List<String> get installedModules => [
         'TODO list',
-        'Notes',
       ];
 
   @override
@@ -84,7 +75,7 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       );
-                    } else {
+                    } /*else {
                       return GestureDetector(
                         onTap: () {
                           // Handle adding a new module
@@ -109,7 +100,7 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       );
-                    }
+                    }*/
                   },
                 ),
               ),
@@ -140,8 +131,6 @@ class HomePage extends StatelessWidget {
     switch (module) {
       case 'TODO list':
         return const TodoRoute();
-      case 'Notes':
-        return const NotesRoute();
       default:
         return null;
     }

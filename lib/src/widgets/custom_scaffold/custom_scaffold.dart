@@ -22,7 +22,6 @@ class CustomScaffold extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: title,
-        profile: null,
       ),
       drawer: const SidePanel(),
       body: body,

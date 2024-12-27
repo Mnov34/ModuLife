@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:modulife/src/widgets/custom_scaffold/custom_scaffold.dart';
-
 import 'package:modulife_todos/modulife_todos.dart';
 import 'package:modulife_todos/repositories/folder_repository.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
@@ -86,7 +84,8 @@ class _TodoPageState extends State<TodoPage> {
 
   void _showAddDialog(BuildContext parentContext, String type) {
     final TextEditingController controller = TextEditingController();
-    Folder? selectedFolder;
+
+    String? selectedFolderId;
 
     showDialog(
       context: parentContext,
@@ -97,49 +96,51 @@ class _TodoPageState extends State<TodoPage> {
             'Add $type',
             style: const TextStyle(color: UiColors.background),
           ),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter state) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: controller,
-                    decoration: InputDecoration(
-                      hintText: 'Enter $type title',
-                      fillColor: UiColors.background,
+          content: SingleChildScrollView(
+            child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter state) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: controller,
+                      decoration: InputDecoration(
+                        hintText: 'Enter $type title',
+                        fillColor: UiColors.background,
+                      ),
                     ),
-                  ),
-                  if (type == 'TODO')
-                    BlocBuilder<FolderBloc, FolderState>(
-                      bloc: BlocProvider.of<FolderBloc>(parentContext),
-                      builder: (BuildContext context, FolderState state) {
-                        return DropdownButton<Folder?>(
-                          value: selectedFolder,
-                          hint: const Text('Select Folder (optional)'),
-                          isExpanded: true,
-                          onChanged: (Folder? folder) {
-                            setState(() {
-                              selectedFolder = folder;
-                            });
-                          },
-                          items: [
-                            const DropdownMenuItem<Folder?>(
-                              value: null,
-                              child: Text('No Folder'),
-                            ),
-                            ...state.allFolders.map((Folder folder) {
-                              return DropdownMenuItem<Folder?>(
-                                value: folder,
-                                child: Text(folder.title),
-                              );
-                            }),
-                          ],
-                        );
-                      },
-                    ),
-                ],
-              );
-            },
+                    if (type == 'TODO')
+                      BlocBuilder<FolderBloc, FolderState>(
+                        bloc: BlocProvider.of<FolderBloc>(parentContext),
+                        builder: (BuildContext context, FolderState state) {
+                          return DropdownButton<String?>(
+                            value: selectedFolderId,
+                            hint: const Text('Select Folder (optional)'),
+                            isExpanded: true,
+                            onChanged: (String? folderId) {
+                              setState(() {
+                                selectedFolderId = folderId;
+                              });
+                            },
+                            items: [
+                              const DropdownMenuItem<String?>(
+                                value: null,
+                                child: Text('No Folder'),
+                              ),
+                              ...state.allFolders.map((Folder folder) {
+                                return DropdownMenuItem<String?>(
+                                  value: folder.id,
+                                  child: Text(folder.title),
+                                );
+                              }),
+                            ],
+                          );
+                        },
+                      ),
+                  ],
+                );
+              },
+            ),
           ),
           actions: [
             TextButton(
@@ -155,17 +156,18 @@ class _TodoPageState extends State<TodoPage> {
                   if (type == 'TODO') {
                     final Todo newTodo = Todo(
                       title: controller.text,
-                      folderId: selectedFolder?.id,
+                      folderId: selectedFolderId,
                     );
 
-                    if (selectedFolder != null && selectedFolder?.id != null) {
-                      final List<Todo> updatedFolderTodos =
-                          List<Todo>.from(selectedFolder!.todos)..add(newTodo);
+                    if (selectedFolderId != null) {
+                      final Folder selectedFolder = parentContext
+                          .read<FolderBloc>()
+                          .state
+                          .allFolders
+                          .firstWhere((Folder f) => f.id == selectedFolderId);
 
-                      final Folder updatedFolder = Folder(
-                        id: selectedFolder?.id,
-                        title: selectedFolder!.title,
-                        todos: updatedFolderTodos,
+                      final Folder updatedFolder = selectedFolder.copyWith(
+                        todos: [...selectedFolder.todos, newTodo],
                       );
 
                       parentContext

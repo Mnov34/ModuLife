@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modulife_todos/modulife_todos.dart';
-import 'package:modulife_todos/repositories/folder_repository.dart';
 import 'package:modulife_ui_colors/modulife_ui_colors.dart';
 
 class TodoList extends StatefulWidget {
@@ -82,16 +81,6 @@ class _TodoListState extends State<TodoList> {
       BuildContext context, TodoState todoState, FolderState folderState) {
     List<Widget> widgets = [];
 
-    List<Todo> floatingTodos = todoState.allTodos
-        .where((Todo todo) => todo.folderId == null)
-        .where((Todo todo) => todo.title.toLowerCase().contains(searchQuery))
-        .toList();
-
-    if (floatingTodos.isNotEmpty) {
-      widgets.addAll(
-          floatingTodos.map((Todo todo) => _buildTodoItem(context, todo)));
-    }
-
     List<Folder> filteredFolders = folderState.allFolders
         .where((Folder folder) =>
             folder.title.toLowerCase().contains(searchQuery) ||
@@ -101,6 +90,16 @@ class _TodoListState extends State<TodoList> {
 
     for (Folder folder in filteredFolders) {
       widgets.add(_buildFolderItem(context, folder, todoState.allTodos));
+    }
+
+    List<Todo> floatingTodos = todoState.allTodos
+        .where((Todo todo) => todo.folderId == null)
+        .where((Todo todo) => todo.title.toLowerCase().contains(searchQuery))
+        .toList();
+
+    if (floatingTodos.isNotEmpty) {
+      widgets.addAll(
+          floatingTodos.map((Todo todo) => _buildTodoItem(context, todo)));
     }
 
     return widgets;
