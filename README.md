@@ -3,6 +3,8 @@
 Modulife is a project designed for accessibility.
 I made this project with me and my boyfriend in mind, to help us in our daily life.
 
+GitLab wiki link: https://gitlab.com/Azalphal/ModuLife/-/wikis/home
+
 ## Table of Contents
 
 - [Currently implemented features](#currently-implemented-features)
